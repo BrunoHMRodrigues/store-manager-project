@@ -1,4 +1,4 @@
-const mockAllProducts = [
+const mockGetAllProducts = [
   [
     {
       "id": 1,
@@ -545,7 +545,7 @@ const mockAllProducts = [
   ]
 ]
 
-const successMockProducts = [
+const successAllProducts = [
   {
     "id": 1,
     "name": "Martelo de Thor"
@@ -560,7 +560,7 @@ const successMockProducts = [
   }
 ]
 
-const mockProduct = [
+const mockGetProduct = [
   [
     {
       "id": 1,
@@ -959,12 +959,12 @@ const mockProduct = [
   ]
 ]
 
-const successMockProduct = {
+const successGetProduct = {
   "id": 1,
   "name": "Martelo de Thor"
 }
 
-const failMockProduct = [
+const mockFailProduct = [
   [],
   [
     {
@@ -1306,4 +1306,23 @@ const failMockProduct = [
   ]
 ]
 
-module.exports = { mockAllProducts, successMockProducts, mockProduct, successMockProduct, failMockProduct };
+const successCreateProduct = [
+  {
+    "fieldCount": 0,
+    "affectedRows": 1,
+    "insertId": 4,
+    "info": "",
+    "serverStatus": 2,
+    "warningStatus": 0
+  },
+  null
+]
+
+module.exports = {
+  mockGetAllProducts,
+  successAllProducts,
+  mockGetProduct,
+  successGetProduct,
+  mockFailProduct,
+  successCreateProduct
+};
