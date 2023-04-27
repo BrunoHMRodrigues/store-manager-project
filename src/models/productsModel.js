@@ -7,10 +7,19 @@ const getAll = async () => {
 
 const getProductById = async (id) => {
   const [[product]] = await connection.execute(
-    'SELECT * FROM StoreManager.products WHERE id = ?',
+    'SELECT * FROM StoreManager.products WHERE id = ?;',
     [id],
   );
   return product;
 };
 
-module.exports = { getAll, getProductById };
+const createProduct = async (product) => {
+  const { name } = product;
+  const [{ insertId: id }] = await connection.execute(
+    'INSERT INTO StoreManager.products (name) VALUES (?);',
+    [name],
+  );
+  return { id, name}
+};
+
+module.exports = { getAll, getProductById, createProduct };
