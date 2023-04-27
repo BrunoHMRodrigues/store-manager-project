@@ -1,18 +1,21 @@
 const { productsModel } = require('../models');
+const { validateName } = require('./validations/validateName');
 
 const getAll = async () => {
-  const products = await productsModel.getAll();
-  return products;
+  const result = await productsModel.getAll();
+  return result;
 };
 
 const getProductById = async (id) => {
-  const product = await productsModel.getProductById(id);
-  return product;
+  const result = await productsModel.getProductById(id);
+  return result;
 };
 
 const createProduct = async (productData) => {
-  const product = await productsModel.createProduct(productData);
-  return product;
+  const validate = await validateName(productData);
+  if (validate.type !== null) return validate;
+  const result = await productsModel.createProduct(productData);
+  return result;
 };
 
 module.exports = { getAll, getProductById, createProduct };

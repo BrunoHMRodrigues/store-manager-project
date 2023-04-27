@@ -2,7 +2,7 @@ const connection = require('./connection');
 
 const getAll = async () => {
     const [products] = await connection.execute('SELECT * FROM StoreManager.products ORDER BY id');
-    return products;
+    return { type: null, message: products};
 };
 
 const getProductById = async (id) => {
@@ -10,7 +10,8 @@ const getProductById = async (id) => {
     'SELECT * FROM StoreManager.products WHERE id = ?;',
     [id],
   );
-  return product;
+  if (!product) return { type: 'NOT_FOUND', status: 404, message: 'Product not found' };
+  return { type: null, message: product};
 };
 
 const createProduct = async (product) => {
@@ -19,7 +20,8 @@ const createProduct = async (product) => {
     'INSERT INTO StoreManager.products (name) VALUES (?);',
     [name],
   );
-  return { id, name };
+  const newProduct = { id, name };
+  return { type: null, message: newProduct};
 };
 
 module.exports = { getAll, getProductById, createProduct };
