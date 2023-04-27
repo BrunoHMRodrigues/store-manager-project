@@ -17,6 +17,7 @@ const {
   // mockFailProduct,
   // successCreateProduct
 } = require('../mock/productsMock');
+const { NAME_INVALID, NAME_INVALID_MSG, NAME_REQUIRED_MSG, NAME_REQUIRED, NOT_FOUND_MSG, NOT_FOUND } = require('../../../src/utils/status');
 
 afterEach(() => sinon.restore());
 
@@ -84,7 +85,6 @@ describe('Testing Controller from Products', function () {
       message: 'Product not found'
     }
     it('getProductById id searched doesn"t exist', async function () {
-      const errorMessage = 'Product not found';
       sinon.stub(productsService, 'getProductById').resolves(failureGetProductById)
 
       const req = {
@@ -97,17 +97,16 @@ describe('Testing Controller from Products', function () {
 
       const result = await productsController.getProductById(req, res);
 
-      expect(res.status).to.have.been.calledWith(404);
-      expect(res.json).to.have.been.calledWith({ message: errorMessage});
+      expect(res.status).to.have.been.calledWith(NOT_FOUND);
+      expect(res.json).to.have.been.calledWith({ message: NOT_FOUND_MSG});
     });
 
     it('length of the name of the created product is lower than 5', async function () {
       const productData = { "name": "bad" };
-      const errorMessage = '"name" length must be at least 5 characters long';
       const resultFailValidationName = {
-        type: 'NAME_INVALID',
-        status: 422,
-        message: errorMessage,
+        type: NAME_INVALID,
+        // status: 422,
+        message: NAME_INVALID_MSG,
       };
       
       sinon.stub(productsService, 'createProduct').resolves(resultFailValidationName);
@@ -123,12 +122,11 @@ describe('Testing Controller from Products', function () {
       const result = await productsController.createProduct(req, res);
 
       expect(res.status).to.have.been.calledWith(422);
-      expect(res.json).to.have.been.calledWith({ message: errorMessage });
+      expect(res.json).to.have.been.calledWith({ message: NAME_INVALID_MSG });
     });
 
     it('product passed without name key', async function () {
       const productData = {};
-      const validationMessage = '"name" is required';
 
       const req = {
         body: productData,
@@ -140,8 +138,8 @@ describe('Testing Controller from Products', function () {
 
       await productsController.createProduct(req, res);
 
-      expect(res.status).to.have.been.calledWith(400);
-      expect(res.json).to.have.been.calledWith({ message: validationMessage });
+      expect(res.status).to.have.been.calledWith(NAME_REQUIRED);
+      expect(res.json).to.have.been.calledWith({ message: NAME_REQUIRED_MSG });
     });
   });
 });

@@ -7,24 +7,23 @@ const connection = require('./connection');
 
 const createSale = async (sales) => {
   const [{ insertId: saleId }] = await connection.execute(
-      'INSERT INTO StoreManager.sales (date) VALUES (NOW());'
+      'INSERT INTO StoreManager.sales (date) VALUES (NOW());',
   );
 
-  let itemsSold = [];
-
-  for (let index = 0; index < sales.length; index += 1) {
-    const { productId, quantity } = sales[index];
+  const promises = sales.map(async (sale) => {
+    const { productId, quantity } = sale;
     await connection.execute(
       'INSERT INTO StoreManager.sales_products (sale_id, product_id, quantity) VALUES (?, ?, ?);',
       [saleId, productId, quantity],
     );
-    itemsSold.push({
-      productId,
-      quantity,
-    })
-  }
+    return { productId, quantity };
+  });
+
+  const itemsSold = await Promise.all(promises);
+
   const newSale = { id: saleId, itemsSold };
-  return { type: null, message: newSale };
+  // return { type: null, message: newSale };
+  return newSale;
 };
 
 module.exports = { createSale };

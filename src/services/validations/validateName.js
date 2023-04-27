@@ -1,9 +1,10 @@
+const { NAME_INVALID, NAME_INVALID_MSG } = require('../../utils/status');
+
 const validateName = async (productData) => {
   if (productData.name.length < 5) {
     return {
-      type: 'NAME_INVALID',
-      status: 422,
-      message: '"name" length must be at least 5 characters long',
+      type: NAME_INVALID,
+      message: NAME_INVALID_MSG,
     };
   }
   return { type: null };

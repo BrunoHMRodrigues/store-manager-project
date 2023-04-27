@@ -1,4 +1,11 @@
 const { productsService } = require('../services');
+const {
+  NOT_FOUND,
+  // NAME_INVALID,
+  NAME_REQUIRED,
+  NOT_FOUND_MSG,
+  // NAME_INVALID_MSG,
+  NAME_REQUIRED_MSG } = require('../utils/status');
 
 const getAll = async (req, res) => {
   const result = await productsService.getAll();
@@ -7,17 +14,16 @@ const getAll = async (req, res) => {
 
 const getProductById = async (req, res) => {
   const { id } = req.params;
-  console.log(req);
   const result = await productsService.getProductById(id);
-  if (result.type !== null) return res.status(result.status).json({ message: result.message });
+  if (result.type !== null) return res.status(NOT_FOUND).json({ message: NOT_FOUND_MSG });
   return res.status(200).json(result.message);
 };
 
 const createProduct = async (req, res) => {
   const productData = req.body;
-  if (!productData.name) return res.status(400).json({ message: '"name" is required' });
+  if (!productData.name) return res.status(NAME_REQUIRED).json({ message: NAME_REQUIRED_MSG });
   const result = await productsService.createProduct(productData);
-  if (result.type !== null) return res.status(result.status).json({ message: result.message });
+  if (result.type !== null) return res.status(result.type).json({ message: result.message });
 
   return res.status(201).json(result.message);
 };
