@@ -3,7 +3,6 @@ const sinon = require('sinon');
 
 const { productsModel } = require('../../../src/models');
 const { productsService } = require('../../../src/services');
-// const connection = require('../../../src/models/connection');
 const { validateName } = require('../../../src/services/validations/validateName');
 
 const {
@@ -67,16 +66,11 @@ describe('Testing Service from Products', function () {
       message: '"name" length must be at least 5 characters long',
     };
 
-    // VERIFY HOW TO DO IT
     it('length of the name of the product lower than 5', async function () {
-      // const validateNameStub = sinon.stub(validateName);
-      // validateNameStub.throws(resultFailValidateName);
-
       sinon.stub(productsModel, 'createProduct').resolves(resultSuccessCreateProduct);
 
       const result = await productsService.createProduct(productData);
 
-      // expect(validateNameStub.calledOnceWith(productData)).to.be.true;
       expect(result).to.contains.keys(['type', 'status', 'message']);
       expect(result).to.be.deep.equal(resultFailValidateName);
     });

@@ -1,4 +1,3 @@
-// const { expect } = require('chai');
 const chai = require('chai');
 const sinon = require('sinon');
 const sinonChai = require('sinon-chai');
@@ -7,7 +6,6 @@ chai.use(sinonChai);
 
 const { expect } = chai;
 
-// const { productsModel } = require('../../../src/models');
 const { productsService } = require('../../../src/services');
 const { productsController } = require('../../../src/controllers');
 
@@ -34,7 +32,7 @@ describe('Testing Controller from Products', function () {
       res.status = sinon.stub().returns(res);
       res.json = sinon.stub().returns();
 
-      const result = await productsController.getAll(req, res);
+      await productsController.getAll(req, res);
 
       expect(res.status).to.have.been.calledWith(200);
       expect(res.json).to.have.been.calledWith(successAllProducts);
@@ -52,7 +50,7 @@ describe('Testing Controller from Products', function () {
       res.status = sinon.stub().returns(res);
       res.json = sinon.stub().returns();
 
-      const result = await productsController.getProductById(req, res);
+      await productsController.getProductById(req, res);
 
       expect(res.status).to.have.been.calledWith(200);
       expect(res.json).to.have.been.calledWith(successGetProduct);
@@ -72,10 +70,78 @@ describe('Testing Controller from Products', function () {
       res.status = sinon.stub().returns(res);
       res.json = sinon.stub().returns();
 
-      const result = await productsController.createProduct(req, res);
+      await productsController.createProduct(req, res);
 
       expect(res.status).to.have.been.calledWith(201);
       expect(res.json).to.have.been.calledWith(newProduct);
+    });
+  });
+
+  describe('Cases of failure', function () {
+    const failureGetProductById = {
+      type: 'NOT_FOUND',
+      status: 404,
+      message: 'Product not found'
+    }
+    it('getProductById id searched doesn"t exist', async function () {
+      const errorMessage = 'Product not found';
+      sinon.stub(productsService, 'getProductById').resolves(failureGetProductById)
+
+      const req = {
+        params: { id: '999' },
+      };
+      const res = {};
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+
+      const result = await productsController.getProductById(req, res);
+
+      expect(res.status).to.have.been.calledWith(404);
+      expect(res.json).to.have.been.calledWith({ message: errorMessage});
+    });
+
+    it('length of the name of the created product is lower than 5', async function () {
+      const productData = { "name": "bad" };
+      const errorMessage = '"name" length must be at least 5 characters long';
+      const resultFailValidationName = {
+        type: 'NAME_INVALID',
+        status: 422,
+        message: errorMessage,
+      };
+      
+      sinon.stub(productsService, 'createProduct').resolves(resultFailValidationName);
+
+      const req = {
+        body: productData,
+      };
+      const res = {};
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+
+      const result = await productsController.createProduct(req, res);
+
+      expect(res.status).to.have.been.calledWith(422);
+      expect(res.json).to.have.been.calledWith({ message: errorMessage });
+    });
+
+    it('product passed without name key', async function () {
+      const productData = {};
+      const validationMessage = '"name" is required';
+
+      const req = {
+        body: productData,
+      };
+      const res = {};
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+
+      await productsController.createProduct(req, res);
+
+      expect(res.status).to.have.been.calledWith(400);
+      expect(res.json).to.have.been.calledWith({ message: validationMessage });
     });
   });
 });
