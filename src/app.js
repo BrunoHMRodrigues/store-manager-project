@@ -1,7 +1,7 @@
 // Iniciando
 const express = require('express');
 // const productsController = require('./controllers/productsController');
-const { productRouter } = require('./routers'); 
+const { productRouter, saleRouter } = require('./routers'); 
 
 const app = express();
 app.use(express.json());
@@ -13,6 +13,7 @@ app.get('/', (_request, response) => {
 
 // app.use('/products', productsController.getAll);
 app.use('/products', productRouter);
+app.use('/sales', saleRouter);
 
 // app.use('/products/:id', productsController.getProductById);
 
