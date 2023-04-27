@@ -8,6 +8,6 @@ const getAll = async () => {
 const getProductById = async (id) => {
   const product = await productsModel.getProductById(id);
   return product;
-}
+};
 
 module.exports = { getAll, getProductById };
