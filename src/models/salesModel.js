@@ -27,30 +27,23 @@ const getSaleById = async (saleId) => {
   `,
     [saleId]);
 
-  console.log('result', result);
   return result;
 };
 
-const createSale = async (sales) => {
+const createSale = async () => {
   const [{ insertId: saleId }] = await connection.execute(
       'INSERT INTO StoreManager.sales (date) VALUES (NOW());',
   );
-  console.log('saleid =>', saleId);
-  const promises = sales.map(async (sale) => {
-    const { productId, quantity } = sale;
-    const result = await connection.execute(
-      'INSERT INTO StoreManager.sales_products (sale_id, product_id, quantity) VALUES (?, ?, ?);',
-      [saleId, productId, quantity],
-    );
-    console.log('result => ', result);
-    // return { productId, quantity };
-  });
-  console.log('promises before => ', promises);
-  // const itemsSold = await Promise.all(promises);
-  await Promise.all(promises);
-  console.log('promises after => ', promises);
-  const newSale = { id: saleId, itemsSold: sales };
-  return newSale;
+
+  return saleId;
 };
 
-module.exports = { createSale, getAll, getSaleById };
+const createSaleProduct = async (saleId, sale) => {
+  const { productId, quantity } = sale;
+  await connection.execute(
+    'INSERT INTO StoreManager.sales_products (sale_id, product_id, quantity) VALUES (?, ?, ?);',
+    [saleId, productId, quantity],
+  );
+};
+
+module.exports = { createSale, createSaleProduct, getAll, getSaleById };

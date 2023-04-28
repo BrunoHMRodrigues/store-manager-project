@@ -34,8 +34,19 @@ const createSale = async (salesData) => {
   if (getValidation) {
     return { type: getValidation.type, message: getValidation.message };
   }
-  const result = await salesModel.createSale(salesData);
 
+  const saleId = await salesModel.createSale();
+
+  salesData.forEach(  (saleData) => {
+    salesModel.createSaleProduct(saleId, saleData);
+  });
+
+  const result = {
+    id: saleId,
+    itemsSold: salesData,
+  }
+
+  console.log('result', result);
   return { type: null, message: result };
 };
 

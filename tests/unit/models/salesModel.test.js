@@ -4,15 +4,15 @@ const sinon = require('sinon');
 const { salesModel } = require('../../../src/models');
 const connection = require('../../../src/models/connection');
 
-const { successCreateSale } = require('../utils/salesHelper')
+const { successCreateSale, successGetAllSales, successGetById } = require('../utils/salesHelper')
 
-const {} = require('../mock/salesMock')
+const { mockCreateSale, mockGetAll, mockGetById } = require('../mock/salesMock')
 
 afterEach(() => sinon.restore());
 
 describe('Testing Model from Sales', function () {
   describe('Cases of success', function () {
-    const saleData = [
+    const salesData = [
       {
         "productId": 1,
         "quantity": 1
@@ -22,24 +22,40 @@ describe('Testing Model from Sales', function () {
         "quantity": 5
       }
     ]
-    const newsale = { 'sale_id': 3, 'product_id': 1, 'quantity': 1 };
-    // const successNewProduct = { type: null, message: newProduct };
+
+    const saleData = {
+        "productId": 1,
+        "quantity": 1
+    }
+
+    it('getAll existing data', async function () {
+      sinon.stub(connection, 'execute').resolves(mockGetAll);
+
+      const result = await salesModel.getAll();
+
+      expect(result).to.be.an('array');
+      expect(result).to.have.length(3);
+      expect(result).to.be.deep.equal(successGetAllSales);
+    });
+
+    it('getSaleById existing id', async function () {
+      sinon.stub(connection, 'execute').resolves(mockGetById);
+
+      const result = await salesModel.getSaleById(saleData);
+
+      expect(result).to.be.an('array');
+      expect(result).to.have.length(2);
+      expect(result).to.be.deep.equal(successGetById);
+    });
+
+    // const newsale = { 'sale_id': 3, 'product_id': 1, 'quantity': 1 };
   
     it('createProduct success creating product', async function () {
-      // sinon.stub(connection, 'execute')
-      //   .onCall(0).resolves({ insertId: 3 })
-      //   .onCall(1).resolves({ affectedRows: 1 })
-      //   .onCall(2).resolves({ affectedRows: 1 });
-      sinon.stub(connection, 'execute')
-        .onFirstCall().resolves({ insertId: 3 })
-        .onSecondCall().resolves({ insertId: 3 })
-        .onThirdCall().resolves({ insertId: 3 })
+      sinon.stub(connection, 'execute').resolves(mockCreateSale)
 
-      const result = await salesModel.createSale(saleData);
+      const saleId = await salesModel.createSale();
 
-      expect(result).to.contains.keys(['id', 'itemsSold']);
-      expect(result.itemsSold).to.have.length(2);
-      expect(result).to.be.deep.equal(successCreateSale);
+      expect(saleId).to.be.equal(3);
     });
   })
 });

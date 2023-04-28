@@ -4,15 +4,17 @@ const sinon = require('sinon');
 const { productsModel } = require('../../../src/models');
 const { productsService } = require('../../../src/services');
 const { validateName } = require('../../../src/services/validations/validateName');
-const { NAME_INVALID, NAME_INVALID_MSG } = require('../../../src/utils/status');
+const { NAME_INVALID, NAME_INVALID_MSG, NOT_FOUND, NOT_FOUND_MSG } = require('../../../src/utils/status');
 
 const {
   successAllProducts,
   successGetProduct,
+  failGetInexistentProduct,
 } = require('../utils/productsHelper');
 
 const {
   mockGetProduct,
+  mockFailProduct,
 } = require('../mock/productsMock');
 
 afterEach(() => sinon.restore());
@@ -32,7 +34,7 @@ describe('Testing Service from Products', function () {
       expect(result.message).to.be.deep.equal(successAllProducts);
     });
 
-    const resultSuccessGetProduct = { type: null, message: successGetProduct };
+    // const resultSuccessGetProduct = { type: null, message: successGetProduct };
     it('getProductById existing id', async function () {
       // sinon.stub(productsModel, 'getProductById').resolves(resultSuccessGetProduct);
       sinon.stub(productsModel, 'getProductById').resolves(successGetProduct);
@@ -84,6 +86,23 @@ describe('Testing Service from Products', function () {
       // expect(result).to.be.deep.equal(resultFailValidateName);
       expect(result).to.contains.keys(['type', 'message']);
       expect(result).to.be.deep.equal(resultFailValidateName);
+      // expect(result.type).to.be.equal(NAME_INVALID);
+      // expect(result.message).to.be.deep.equal(NAME_INVALID_MSG);
+    });
+
+    it('product id doesn"t exist', async function () {
+      // sinon.stub(productsModel, 'createProduct').resolves(resultSuccessCreateProduct);
+      sinon.stub(productsModel, 'getProductById').resolves(undefined);
+
+      const result = await productsService.getProductById(999);
+
+      console.log('result', result);
+      // expect(result).to.contains.keys(['type', 'status', 'message']);
+      // expect(result).to.be.deep.equal(resultFailValidateName);
+      expect(result).to.contains.keys(['type', 'message']);
+      expect(result.type).to.be.equal(NOT_FOUND);
+      expect(result.message).to.be.equal(NOT_FOUND_MSG);
+      expect(result).to.be.deep.equal(failGetInexistentProduct);
       // expect(result.type).to.be.equal(NAME_INVALID);
       // expect(result.message).to.be.deep.equal(NAME_INVALID_MSG);
     });

@@ -10,6 +10,7 @@ const getAll = async (req, res) => {
 const getSaleById = async (req, res) => {
   const { id } = req.params;
   const result = await salesService.getSaleById(id);
+  console.log(result);
   if (result.type !== null) return res.status(result.type).json({ message: result.message });
 
   return res.status(200).json(result.message);
