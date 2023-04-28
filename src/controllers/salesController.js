@@ -1,6 +1,20 @@
 const { salesService } = require('../services');
 const { validateData } = require('./validation/validateData');
 
+const getAll = async (req, res) => {
+  const result = await salesService.getAll();
+
+  return res.status(200).json(result.message);
+}
+
+const getSaleById = async (req, res) => {
+  const { id } = req.params;
+  const result = await salesService.getSaleById(id);
+  if (result.type !== null) return res.status(result.type).json({ message: result.message });
+
+  return res.status(200).json(result.message);
+}
+
 const createSale = async (req, res) => {
   const saleData = req.body;
   for (let index = 0; index < saleData.length; index += 1) {
@@ -16,4 +30,4 @@ const createSale = async (req, res) => {
   return res.status(201).json(result.message);
 };
 
-module.exports = { createSale };
+module.exports = { createSale, getAll, getSaleById };

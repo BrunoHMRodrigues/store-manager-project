@@ -16,6 +16,9 @@ const INVALID_QUANTITY_MSG = '"quantity" must be greater than or equal to 1';
 const INVALID_PRODUCT_ID = 404;
 const INVALID_PRODUCT_ID_MSG = 'Product not found';
 
+const SALE_NOT_FOUND = 404;
+const SALE_NOT_FOUND_MSG = 'Sale not found';
+
 module.exports = {
   NOT_FOUND,
   NAME_INVALID,
@@ -31,4 +34,6 @@ module.exports = {
   INVALID_QUANTITY_MSG,
   INVALID_PRODUCT_ID,
   INVALID_PRODUCT_ID_MSG,
+  SALE_NOT_FOUND,
+  SALE_NOT_FOUND_MSG,
 };
