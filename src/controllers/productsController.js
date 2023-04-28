@@ -19,6 +19,19 @@ const getProductById = async (req, res) => {
   return res.status(200).json(result.message);
 };
 
+const editProductById = async (req, res) => {
+  const { id } = req.params;
+  const { name } = req.body;
+
+  if (!name) return res.status(NAME_REQUIRED).json({ message: NAME_REQUIRED_MSG });
+
+  const result = await productsService.editProductById({ id, name });
+
+  if (result.type !== null) return res.status(result.type).json({ message: result.message });
+
+  return res.status(200).json(result.message);
+};
+
 const createProduct = async (req, res) => {
   const productData = req.body;
   if (!productData.name) return res.status(NAME_REQUIRED).json({ message: NAME_REQUIRED_MSG });
@@ -28,4 +41,4 @@ const createProduct = async (req, res) => {
   return res.status(201).json(result.message);
 };
 
-module.exports = { getAll, getProductById, createProduct };
+module.exports = { getAll, getProductById, createProduct, editProductById };

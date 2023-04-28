@@ -14,6 +14,18 @@ const getProductById = async (id) => {
   return { type: null, message: product };
 };
 
+const editProductById = async ({ id, name }) => {
+  const validate = await validateName({ name });
+  console.log('validate', validate);
+  if (validate.type !== null) return validate;
+
+  const product = await productsModel.getProductById(id);
+  if (!product) return { type: NOT_FOUND, message: NOT_FOUND_MSG };
+  await productsModel.editProductById({ id, name });
+
+  return { type: null, message: { id, name } };
+};
+
 const createProduct = async (productData) => {
   const validate = await validateName(productData);
   if (validate.type !== null) return validate;
@@ -21,4 +33,4 @@ const createProduct = async (productData) => {
   return { type: null, message: product };
 };
 
-module.exports = { getAll, getProductById, createProduct };
+module.exports = { getAll, getProductById, createProduct, editProductById };
