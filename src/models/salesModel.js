@@ -49,7 +49,7 @@ const createSale = async (sales) => {
   // const itemsSold = await Promise.all(promises);
   await Promise.all(promises);
   console.log('promises after => ', promises);
-  const newSale = { id: saleId, itemsSold: saleId };
+  const newSale = { id: saleId, itemsSold: sales };
   return newSale;
 };
 
