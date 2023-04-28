@@ -5,7 +5,7 @@ const getAll = async (req, res) => {
   const result = await salesService.getAll();
 
   return res.status(200).json(result.message);
-}
+};
 
 const getSaleById = async (req, res) => {
   const { id } = req.params;
@@ -13,7 +13,7 @@ const getSaleById = async (req, res) => {
   if (result.type !== null) return res.status(result.type).json({ message: result.message });
 
   return res.status(200).json(result.message);
-}
+};
 
 const createSale = async (req, res) => {
   const saleData = req.body;

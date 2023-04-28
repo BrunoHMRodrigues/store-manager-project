@@ -25,8 +25,7 @@ const getSaleById = async (saleId) => {
     INNER JOIN StoreManager.sales as s on s.id = sp.sale_id
     WHERE sp.sale_id = ?;
   `,
-    [saleId],
-  );
+    [saleId]);
 
   console.log('result', result);
   return result;

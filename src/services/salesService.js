@@ -5,13 +5,13 @@ const { validateQuantity, validateProductId } = require('./validations/salesVali
 const getAll = async () => {
   const result = await salesModel.getAll();
   return { type: null, message: result };
-}
+};
 
 const getSaleById = async (saleId) => {
   const result = await salesModel.getSaleById(saleId);
   if (result.length < 1) return { type: SALE_NOT_FOUND, message: SALE_NOT_FOUND_MSG };
   return { type: null, message: result };
-}
+};
 
 const createSale = async (salesData) => {
   // Percorrer todos os itens do array. O resultado é um array de mesmo tamanho que o salesData onde cada item será o primeiro caso inválido entre quantity ou o productId ou será null.
