@@ -6,7 +6,7 @@ const {
   INVALID_PRODUCT_ID_MSG,
 } = require('../../utils/status');
 
-const validateQuantity = async (saleData) => {
+const validateQuantity = (saleData) => {
   if (saleData.quantity < 1) {
     return { type: INVALID_QUANTITY, message: INVALID_QUANTITY_MSG };
   }

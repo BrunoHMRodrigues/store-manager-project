@@ -3,11 +3,11 @@ const { validateData } = require('./validation/validateData');
 
 const createSale = async (req, res) => {
   const saleData = req.body;
-  for (const sale of saleData) {
-    const dataValidation = await validateData(sale);
-    if (dataValidation.type !== null) return res
-      .status(dataValidation.type)
-      .json({ message: dataValidation.message });
+  for (let index = 0; index < saleData.length; index += 1) {
+    const dataValidation = validateData(saleData[index]);
+    if (dataValidation.type !== null) {
+      return res.status(dataValidation.type).json({ message: dataValidation.message });
+    }
   }
 
   const result = await salesService.createSale(saleData);

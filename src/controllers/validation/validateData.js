@@ -4,7 +4,7 @@ const {
   QUANTITY_REQUIRED,
   QUANTITY_REQUIRED_MSG } = require('../../utils/status');
 
-const validateData = async (saleData) => {
+const validateData = (saleData) => {
   if (saleData.productId === undefined) {
     return { type: PRODUCT_ID_REQUIRED, message: PRODUCT_ID_REQUIRED_MSG };
   }
