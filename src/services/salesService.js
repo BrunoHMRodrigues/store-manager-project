@@ -2,7 +2,6 @@ const { salesModel } = require('../models');
 const { validateQuantity, validateProductId } = require('./validations/salesValidation');
 
 const createSale = async (salesData) => {
-
   // Percorrer todos os itens do array. O resultado é um array de mesmo tamanho que o salesData onde cada item será o primeiro caso inválido entre quantity ou o productId ou será null.
   const validations = await Promise.all(salesData.map(async (sale) => {
     const quantityValidation = validateQuantity(sale);

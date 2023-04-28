@@ -10,14 +10,17 @@ const { productsService } = require('../../../src/services');
 const { productsController } = require('../../../src/controllers');
 
 const {
-  // mockGetAllProducts,
   successAllProducts,
-  // mockGetProduct,
   successGetProduct,
-  // mockFailProduct,
-  // successCreateProduct
-} = require('../mock/productsMock');
-const { NAME_INVALID, NAME_INVALID_MSG, NAME_REQUIRED_MSG, NAME_REQUIRED, NOT_FOUND_MSG, NOT_FOUND } = require('../../../src/utils/status');
+} = require('../utils/productsHelper');
+
+const {
+  NAME_INVALID,
+  NAME_INVALID_MSG,
+  NAME_REQUIRED_MSG,
+  NAME_REQUIRED,
+  NOT_FOUND_MSG,
+  NOT_FOUND } = require('../../../src/utils/status');
 
 afterEach(() => sinon.restore());
 

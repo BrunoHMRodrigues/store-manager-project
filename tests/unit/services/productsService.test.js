@@ -7,12 +7,12 @@ const { validateName } = require('../../../src/services/validations/validateName
 const { NAME_INVALID, NAME_INVALID_MSG } = require('../../../src/utils/status');
 
 const {
-  // mockGetAllProducts,
   successAllProducts,
-  mockGetProduct,
   successGetProduct,
-  // mockFailProduct,
-  successCreateProduct
+} = require('../utils/productsHelper');
+
+const {
+  mockGetProduct,
 } = require('../mock/productsMock');
 
 afterEach(() => sinon.restore());
@@ -21,7 +21,6 @@ describe('Testing Service from Products', function () {
   describe('Cases of success', function () {
     const resultSuccessGetAll = { type: null, message: successAllProducts };
     it('getAll existing data', async function () {
-      // sinon.stub(productsModel, 'getAll').resolves(resultSuccessGetAll);
       sinon.stub(productsModel, 'getAll').resolves(successAllProducts);
 
       const result = await productsService.getAll();

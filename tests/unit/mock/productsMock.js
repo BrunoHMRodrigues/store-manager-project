@@ -545,21 +545,6 @@ const mockGetAllProducts = [
   ]
 ]
 
-const successAllProducts = [
-  {
-    "id": 1,
-    "name": "Martelo de Thor"
-  },
-  {
-    "id": 2,
-    "name": "Traje de encolhimento"
-  },
-  {
-    "id": 3,
-    "name": "Escudo do Capitão América"
-  }
-]
-
 const mockGetProduct = [
   [
     {
@@ -959,11 +944,6 @@ const mockGetProduct = [
   ]
 ]
 
-const successGetProduct = {
-  "id": 1,
-  "name": "Martelo de Thor"
-}
-
 const mockFailProduct = [
   [],
   [
@@ -1306,7 +1286,7 @@ const mockFailProduct = [
   ]
 ]
 
-const successCreateProduct = [
+const mockCreateProduct = [
   {
     "fieldCount": 0,
     "affectedRows": 1,
@@ -1320,9 +1300,7 @@ const successCreateProduct = [
 
 module.exports = {
   mockGetAllProducts,
-  successAllProducts,
   mockGetProduct,
-  successGetProduct,
   mockFailProduct,
-  successCreateProduct
+  mockCreateProduct,
 };

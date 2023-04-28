@@ -6,11 +6,13 @@ const connection = require('../../../src/models/connection');
 
 const {
   mockGetAllProducts,
-  successAllProducts,
   mockGetProduct,
-  successGetProduct,
   mockFailProduct,
-  successCreateProduct } = require('../mock/productsMock');
+  mockCreateProduct } = require('../mock/productsMock');
+
+  const {
+  successAllProducts,
+  successGetProduct} = require('../utils/productsHelper');
 
 afterEach(() => sinon.restore());
 
@@ -46,7 +48,7 @@ describe('Testing Model from Products', function () {
     // const successNewProduct = { type: null, message: newProduct };
   
     it('createProduct success creating product', async function () {
-      sinon.stub(connection, 'execute').resolves(successCreateProduct)
+      sinon.stub(connection, 'execute').resolves(mockCreateProduct)
 
       const result = await productsModel.createProduct(productData);
 
