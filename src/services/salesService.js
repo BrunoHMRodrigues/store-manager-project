@@ -20,33 +20,18 @@ const createSale = async (salesData) => {
     if (quantityValidation.type !== null) {
       return { type: quantityValidation.type, message: quantityValidation.message };
     }
-
     const productIdValidation = await validateProductId(sale);
     if (productIdValidation.type !== null) {
       return { type: productIdValidation.type, message: productIdValidation.message };
     }
-
     return { type: null };
   }));
-
   // Procura a primeira ocorrência de um caso inválido no array criado com as validações. Caso encontre algum ele é retornado. Caso contrário ele continuará para o o createSale.
   const getValidation = validations.find((validation) => validation.type !== null);
-  if (getValidation) {
-    return { type: getValidation.type, message: getValidation.message };
-  }
-
+  if (getValidation) return { type: getValidation.type, message: getValidation.message };
   const saleId = await salesModel.createSale();
-
-  salesData.forEach(  (saleData) => {
-    salesModel.createSaleProduct(saleId, saleData);
-  });
-
-  const result = {
-    id: saleId,
-    itemsSold: salesData,
-  }
-
-  console.log('result', result);
+  salesData.forEach((saleData) => salesModel.createSaleProduct(saleId, saleData));
+  const result = { id: saleId, itemsSold: salesData };
   return { type: null, message: result };
 };
 
