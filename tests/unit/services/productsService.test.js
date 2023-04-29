@@ -108,7 +108,6 @@ describe('Testing Service from Products', function () {
 
       const result = await productsService.getProductById(999);
 
-      console.log('result', result);
       // expect(result).to.contains.keys(['type', 'status', 'message']);
       // expect(result).to.be.deep.equal(resultFailValidateName);
       expect(result).to.contains.keys(['type', 'message']);

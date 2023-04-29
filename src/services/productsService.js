@@ -9,7 +9,6 @@ const getAll = async () => {
 
 const getProductById = async (id) => {
   const product = await productsModel.getProductById(id);
-console.log(product);
   if (!product) return { type: NOT_FOUND, message: NOT_FOUND_MSG };
   return { type: null, message: product };
 };
@@ -33,4 +32,13 @@ const createProduct = async (productData) => {
   return { type: null, message: product };
 };
 
-module.exports = { getAll, getProductById, createProduct, editProductById };
+const deleteProductById = async (id) => {
+  const result = await productsModel.getProductById(id);
+  console.log(result);
+  if (!result) return { type: NOT_FOUND, message: NOT_FOUND_MSG };
+  await productsModel.deleteProductById(id);
+
+  return { type: null };
+};
+
+module.exports = { getAll, getProductById, createProduct, editProductById, deleteProductById };

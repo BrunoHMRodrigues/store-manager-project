@@ -10,7 +10,7 @@ const getProductById = async (id) => {
     'SELECT * FROM StoreManager.products WHERE id = ?;',
     [id],
   );
-console.log('pegar', product);
+
   return product;
 };
 
@@ -31,4 +31,11 @@ const createProduct = async (product) => {
   return newProduct;
 };
 
-module.exports = { getAll, getProductById, createProduct, editProductById };
+const deleteProductById = async (id) => {
+  await connection.execute(
+    'DELETE FROM StoreManager.products WHERE id = ?',
+    [id],
+  );
+};
+
+module.exports = { getAll, getProductById, createProduct, editProductById, deleteProductById };

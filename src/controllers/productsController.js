@@ -41,4 +41,14 @@ const createProduct = async (req, res) => {
   return res.status(201).json(result.message);
 };
 
-module.exports = { getAll, getProductById, createProduct, editProductById };
+const deleteProductById = async (req, res) => {
+  const { id } = req.params;
+
+  const result = await productsService.deleteProductById(id);
+  console.log('controller', result);
+  if (result.type !== null) return res.status(NOT_FOUND).json({ message: NOT_FOUND_MSG });
+
+  return res.status(204).json({});
+};
+
+module.exports = { getAll, getProductById, createProduct, editProductById, deleteProductById };
