@@ -10,15 +10,11 @@ const getProductById = async (id) => {
     'SELECT * FROM StoreManager.products WHERE id = ?;',
     [id],
   );
-
+console.log('pegar', product);
   return product;
 };
 
 const editProductById = async ({ id, name }) => {
-  // const products = await getAll();
-  // const getProduct = products.filter((product) => product.id === id);
-  // getProduct.name = name;
-
   await connection.execute(
     'UPDATE StoreManager.products SET name = ? WHERE id = ?',
     [name, id],

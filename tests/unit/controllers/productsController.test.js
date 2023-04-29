@@ -60,6 +60,27 @@ describe('Testing Controller from Products', function () {
       expect(res.json).to.have.been.calledWith(successGetProduct);
     });
 
+    it('editProductById existing id', async function () {
+      const id = 1;
+      const name = 'Martelo do Batman';
+      const resultSuccessEdit = { type: null, message: { id, name } }
+      sinon.stub(productsService, 'editProductById').resolves(resultSuccessEdit);
+
+      const req = {
+        params: { id },
+        body: { name },
+      };
+      const res = {};
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+
+      await productsController.editProductById(req, res);
+
+      expect(res.status).to.have.been.calledWith(200);
+      expect(res.json).to.have.been.calledWith({ id, name });
+    });
+
     const productData = { "name": "xablau" };
     const newProduct = { "id": 4, "name": "xablau" };
     const resultSuccessCreateProduct = { type: null, message: newProduct };
@@ -140,6 +161,26 @@ describe('Testing Controller from Products', function () {
       res.json = sinon.stub().returns();
 
       await productsController.createProduct(req, res);
+
+      expect(res.status).to.have.been.calledWith(NAME_REQUIRED);
+      expect(res.json).to.have.been.calledWith({ message: NAME_REQUIRED_MSG });
+    });
+
+    it('editProductById missing name', async function () {
+      const id = 1;
+      // const resultSuccessEdit = { type: null, message: { id, name } }
+      // sinon.stub(productsService, 'editProductById').resolves(resultSuccessEdit);
+
+      const req = {
+        params: { id },
+        body: {},
+      };
+      const res = {};
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+
+      await productsController.editProductById(req, res);
 
       expect(res.status).to.have.been.calledWith(NAME_REQUIRED);
       expect(res.json).to.have.been.calledWith({ message: NAME_REQUIRED_MSG });

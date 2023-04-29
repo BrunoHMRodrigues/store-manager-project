@@ -9,14 +9,14 @@ const getAll = async () => {
 
 const getProductById = async (id) => {
   const product = await productsModel.getProductById(id);
-
+console.log(product);
   if (!product) return { type: NOT_FOUND, message: NOT_FOUND_MSG };
   return { type: null, message: product };
 };
 
 const editProductById = async ({ id, name }) => {
   const validate = await validateName({ name });
-  console.log('validate', validate);
+
   if (validate.type !== null) return validate;
 
   const product = await productsModel.getProductById(id);

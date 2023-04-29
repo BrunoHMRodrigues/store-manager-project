@@ -47,6 +47,18 @@ describe('Testing Service from Products', function () {
       expect(result.message).to.be.equal(successGetProduct);
     });
 
+    it('editProductById existing id', async function () {
+      const id = 1;
+      const name = 'Martelo do Batman';
+      sinon.stub(productsModel, 'editProductById').resolves();
+
+      const result = await productsService.editProductById({ id, name });
+
+      expect(result).to.contains.keys(['type', 'message']);
+      expect(result.type).to.be.equal(null);
+      expect(result.message).to.be.deep.equal({ id: 1, name: 'Martelo do Batman' });
+    });
+
     const productData = { "name": "xablau" };
     const newProduct = { "id": 4, "name": "xablau" };
     const resultSuccessCreateProduct = { type: null, message: newProduct };
@@ -105,6 +117,32 @@ describe('Testing Service from Products', function () {
       expect(result).to.be.deep.equal(failGetInexistentProduct);
       // expect(result.type).to.be.equal(NAME_INVALID);
       // expect(result.message).to.be.deep.equal(NAME_INVALID_MSG);
+    });
+
+    it('editProductById id doesn"t exist', async function () {
+      // sinon.stub(productsModel, 'getProductById').resolves(resultSuccessGetProduct);
+      const id = 999;
+      const name = 'Martelo do Batman';
+      sinon.stub(productsModel, 'getProductById').resolves(undefined);
+
+      const result = await productsService.editProductById({ id, name });
+
+      expect(result).to.contains.keys(['type', 'message']);
+      // expect(result).to.be.deep.equal(resultSuccessGetProduct);
+      expect(result).to.be.deep.equal({ type: NOT_FOUND, message: NOT_FOUND_MSG });
+    });
+
+    it('editProductById length of the name of the product lower than 5', async function () {
+      // sinon.stub(productsModel, 'getProductById').resolves(resultSuccessGetProduct);
+      const id = 1;
+      const name = 'bad';
+      sinon.stub(productsModel, 'getProductById').resolves({ id, name });
+
+      const result = await productsService.editProductById({ id, name });
+
+      expect(result).to.contains.keys(['type', 'message']);
+      // expect(result).to.be.deep.equal(resultSuccessGetProduct);
+      expect(result).to.be.deep.equal({ type: NAME_INVALID, message: NAME_INVALID_MSG });
     });
   });
 });
