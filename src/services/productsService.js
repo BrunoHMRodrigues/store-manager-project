@@ -34,7 +34,7 @@ const createProduct = async (productData) => {
 
 const deleteProductById = async (id) => {
   const result = await productsModel.getProductById(id);
-  console.log(result);
+
   if (!result) return { type: NOT_FOUND, message: NOT_FOUND_MSG };
   await productsModel.deleteProductById(id);
 

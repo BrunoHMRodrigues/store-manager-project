@@ -37,7 +37,7 @@ const createSale = async (salesData) => {
 
 const deleteSaleById = async (saleId) => {
   const result = await salesModel.getSaleById(saleId);
-  console.log('resultado se existe', result);
+
   if (result.length < 1) return { type: SALE_NOT_FOUND, message: SALE_NOT_FOUND_MSG };
 
   await salesModel.deleteSaleById(saleId);
