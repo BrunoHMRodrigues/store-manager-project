@@ -47,6 +47,16 @@ describe('Testing Service from Sales', function () {
       expect(result).to.have.keys(['type', 'message']);
       expect(result).to.be.deep.equal({ type: null, message: successCreateSale });
     });
+
+    it('deleteSaleById success delete', async function () {
+      const id = 2;
+      sinon.stub(salesModel, 'deleteSaleById').resolves();
+      sinon.stub(salesModel, 'deleteSaleProductsById').resolves();
+
+      const result = await salesService.deleteSaleById(id);
+
+      expect(result.type).to.be.deep.equal(null);
+    });
   });
   
   describe('Cases of failure', function () {
@@ -108,6 +118,16 @@ describe('Testing Service from Sales', function () {
 
       expect(result).to.have.keys(['type', 'message']);
       expect(result).to.be.deep.equal({ type: INVALID_PRODUCT_ID, message: INVALID_PRODUCT_ID_MSG });
+    });
+
+    it('deleteSaleById inexistent id', async function () {
+      const id = 999;
+      sinon.stub(salesModel, 'deleteSaleById').resolves();
+      sinon.stub(salesModel, 'deleteSaleProductsById').resolves();
+      // sinon.stub(salesModel, 'deleteSaleById')
+      const result = await salesService.deleteSaleById(id);
+
+      expect(result).to.be.deep.equal({ type: SALE_NOT_FOUND, message: SALE_NOT_FOUND_MSG });
     });
   });
 });

@@ -75,6 +75,16 @@ describe('Testing Service from Products', function () {
       // expect(result.type).to.be.equal(null);
       // expect(result.message).to.contains.keys(['id', 'name']);
     });
+
+    it('deleteProductById success delete', async function () {
+      const id = 2;
+      sinon.stub(productsModel, 'deleteProductById').resolves();
+      // sinon.stub(salesModel, 'deleteSaleProductsById').resolves();
+
+      const result = await productsService.deleteProductById(id);
+
+      expect(result.type).to.be.deep.equal(null);
+    });
   });
 
   describe('Cases of failure', function () {
@@ -142,6 +152,16 @@ describe('Testing Service from Products', function () {
       expect(result).to.contains.keys(['type', 'message']);
       // expect(result).to.be.deep.equal(resultSuccessGetProduct);
       expect(result).to.be.deep.equal({ type: NAME_INVALID, message: NAME_INVALID_MSG });
+    });
+
+    it('deleteProductById inexistent id', async function () {
+      const id = 999;
+      sinon.stub(productsModel, 'deleteProductById').resolves();
+      // sinon.stub(productsModel, 'deleteSaleProductsById').resolves();
+
+      const result = await productsService.deleteProductById(id);
+
+      expect(result).to.be.deep.equal({ type: NOT_FOUND, message: NOT_FOUND_MSG });
     });
   });
 });

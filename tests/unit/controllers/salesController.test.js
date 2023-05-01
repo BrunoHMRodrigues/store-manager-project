@@ -16,12 +16,12 @@ const {
 } = require('../utils/salesHelper');
 
 const {
-  NAME_INVALID,
-  NAME_INVALID_MSG,
-  NAME_REQUIRED_MSG,
-  NAME_REQUIRED,
-  NOT_FOUND_MSG,
-  NOT_FOUND, 
+  // NAME_INVALID,
+  // NAME_INVALID_MSG,
+  // NAME_REQUIRED_MSG,
+  // NAME_REQUIRED,
+  // NOT_FOUND_MSG,
+  // NOT_FOUND, 
   SALE_NOT_FOUND,
   SALE_NOT_FOUND_MSG,
   PRODUCT_ID_REQUIRED,
@@ -94,6 +94,24 @@ describe('Testing Controller from Sales', function () {
       expect(res.status).to.have.been.calledWith(201);
       expect(res.json).to.have.been.calledWith(successCreateSale);
     });
+
+    it('deleteSaleById success delete', async function () {
+      const id = 2;
+      sinon.stub(salesService, 'deleteSaleById').resolves({ type: null });
+
+      const req = {
+        params: id,
+      };
+      const res = {};
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+
+      await salesController.deleteSaleById(req, res);
+
+      expect(res.status).to.have.been.calledWith(204);
+      expect(res.json).to.have.been.calledWith({});
+    });
   });
 
   describe('Cases of failure', function () {
@@ -109,7 +127,7 @@ describe('Testing Controller from Sales', function () {
       res.status = sinon.stub().returns(res);
       res.json = sinon.stub().returns();
 
-      const result = await salesController.getSaleById(req, res);
+      await salesController.getSaleById(req, res);
 
       expect(res.status).to.have.been.calledWith(SALE_NOT_FOUND);
       expect(res.json).to.have.been.calledWith({ message: SALE_NOT_FOUND_MSG });
@@ -169,45 +187,22 @@ describe('Testing Controller from Sales', function () {
       expect(res.json).to.have.been.calledWith( { message: QUANTITY_REQUIRED_MSG });
     });
 
-    // it('length of the name of the created product is lower than 5', async function () {
-    //   const productData = { "name": "bad" };
-    //   const resultFailValidationName = {
-    //     type: NAME_INVALID,
-    //     // status: 422,
-    //     message: NAME_INVALID_MSG,
-    //   };
-      
-    //   sinon.stub(salesService, 'createProduct').resolves(resultFailValidationName);
+    it('deleteSaleById inexistent id', async function () {
+      const id = 999;
+      sinon.stub(salesService, 'deleteSaleById').resolves({ type: SALE_NOT_FOUND, message: SALE_NOT_FOUND_MSG });
 
-    //   const req = {
-    //     body: productData,
-    //   };
-    //   const res = {};
+      const req = {
+        params: id,
+      };
+      const res = {};
 
-    //   res.status = sinon.stub().returns(res);
-    //   res.json = sinon.stub().returns();
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
 
-    //   const result = await productsController.createProduct(req, res);
+      await salesController.deleteSaleById(req, res);
 
-    //   expect(res.status).to.have.been.calledWith(422);
-    //   expect(res.json).to.have.been.calledWith({ message: NAME_INVALID_MSG });
-    // });
-
-    // it('product passed without name key', async function () {
-    //   const productData = {};
-
-    //   const req = {
-    //     body: productData,
-    //   };
-    //   const res = {};
-
-    //   res.status = sinon.stub().returns(res);
-    //   res.json = sinon.stub().returns();
-
-    //   await productsController.createProduct(req, res);
-
-    //   expect(res.status).to.have.been.calledWith(NAME_REQUIRED);
-    //   expect(res.json).to.have.been.calledWith({ message: NAME_REQUIRED_MSG });
-    // });
+      expect(res.status).to.have.been.calledWith(SALE_NOT_FOUND);
+      expect(res.json).to.have.been.calledWith( { message: SALE_NOT_FOUND_MSG });
+    });
   });
 });

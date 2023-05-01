@@ -100,6 +100,24 @@ describe('Testing Controller from Products', function () {
       expect(res.status).to.have.been.calledWith(201);
       expect(res.json).to.have.been.calledWith(newProduct);
     });
+
+    it('deleteProductById success delete', async function () {
+      const id = 2;
+      sinon.stub(productsService, 'deleteProductById').resolves({ type: null });
+
+      const req = {
+        params: id,
+      };
+      const res = {};
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+
+      await productsController.deleteProductById(req, res);
+
+      expect(res.status).to.have.been.calledWith(204);
+      expect(res.json).to.have.been.calledWith({});
+    });
   });
 
   describe('Cases of failure', function () {
@@ -184,6 +202,24 @@ describe('Testing Controller from Products', function () {
 
       expect(res.status).to.have.been.calledWith(NAME_REQUIRED);
       expect(res.json).to.have.been.calledWith({ message: NAME_REQUIRED_MSG });
+    });
+
+    it('deleteProductById inexistent id', async function () {
+      const id = 999;
+      sinon.stub(productsService, 'deleteProductById').resolves({ type: NOT_FOUND, message: NOT_FOUND_MSG });
+
+      const req = {
+        params: id,
+      };
+      const res = {};
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+
+      await productsController.deleteProductById(req, res);
+
+      expect(res.status).to.have.been.calledWith(NOT_FOUND);
+      expect(res.json).to.have.been.calledWith( { message: NOT_FOUND_MSG });
     });
   });
 });
