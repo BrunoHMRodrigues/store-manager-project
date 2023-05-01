@@ -26,7 +26,7 @@ const getSaleById = async (saleId) => {
     WHERE sp.sale_id = ?;
   `,
     [saleId]);
-
+console.log('result', result);
   return result;
 };
 
@@ -46,4 +46,25 @@ const createSaleProduct = async (saleId, sale) => {
   );
 };
 
-module.exports = { createSale, createSaleProduct, getAll, getSaleById };
+const deleteSaleById = async (saleId) => {
+  await connection.execute(
+    'DELETE FROM StoreManager.sales WHERE id = ?',
+    [saleId],
+  );
+};
+
+const deleteSaleProductsById = async (saleId) => {
+  await connection.execute(
+    'DELETE FROM StoreManager.sales_products WHERE sale_id = ?',
+    [saleId],
+  );
+};
+
+module.exports = {
+  createSale,
+  createSaleProduct,
+  getAll,
+  getSaleById,
+  deleteSaleById,
+  deleteSaleProductsById,
+};
